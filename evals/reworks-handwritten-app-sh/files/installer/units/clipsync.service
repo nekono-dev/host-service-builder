@@ -1,0 +1,13 @@
+[Unit]
+Description=clipsync
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=clipsync
+EnvironmentFile=/etc/clipsync/clipsync.env
+ExecStart=@@DIR@@/installer/run/clipsync.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

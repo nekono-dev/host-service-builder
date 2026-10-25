@@ -1,0 +1,10 @@
+{
+  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
+  "name": "host-service-builder",
+  "version": "1.0.0",
+  "description": "Docker（docker-compose・Dockerfile）で動くアプリを、コンテナを使わずにホストのサービス（Debian 系＋systemd、Alpine＋OpenRC）として動かすための installer/app.sh・起動ラッパー・共通ライブラリを、bootstrap-ci-builder の上に整備するスキル。",
+  "author": { "name": "nekono-dev" },
+  "repository": "https://github.com/nekono-dev/host-service-builder",
+  "license": "Unlicense",
+  "skills": ["./"]
+}

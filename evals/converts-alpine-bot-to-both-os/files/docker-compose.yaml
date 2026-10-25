@@ -1,0 +1,13 @@
+services:
+  notes-bot:
+    restart: always
+    build: .
+    environment:
+      TOKEN: ${TOKEN}
+      CHAT_ID: ${CHAT_ID}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    volumes:
+      - notes-data:/workspace/data
+
+volumes:
+  notes-data:

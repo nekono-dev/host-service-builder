@@ -1,0 +1,3 @@
+LISTEN_PORT|7070|optional|待ち受けポート
+SHARED_KEY||required|端末どうしで共有する鍵
+MAX_ITEMS|50|optional|保持するクリップの最大数

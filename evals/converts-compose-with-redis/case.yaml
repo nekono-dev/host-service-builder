@@ -1,0 +1,8 @@
+schema_version: "1.1"
+name: converts-compose-with-redis
+expected_outcome: |
+  api と worker を別のサービスとして Ubuntu 24.04＋systemd に導入できるようにする。Redis は apt の redis-server で入れ、api・worker はそれに依存する。
+  REDIS_URL のホストは 127.0.0.1 に読み替える。worker は WITH_WORKER のような設定キー（既定 0）で on/off し、0 にすると定義が撤去される。
+  OS・数値・真偽の検査は設定を書く前（app_check）に行う。Python の依存は venv に入れる。bootstrap-ci-builder のコアは変更しない。
+context:
+  scaffold_script: place-files.sh

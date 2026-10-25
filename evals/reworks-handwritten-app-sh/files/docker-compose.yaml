@@ -1,0 +1,15 @@
+services:
+  clipsync:
+    build: .
+    environment:
+      PORT: ${LISTEN_PORT:-7070}
+      KEY: ${SHARED_KEY}
+      MAX_ITEMS: ${MAX_ITEMS:-50}
+    ports:
+      - ${LISTEN_PORT:-7070}:${LISTEN_PORT:-7070}
+    volumes:
+      - clip-data:/data
+    restart: always
+
+volumes:
+  clip-data:

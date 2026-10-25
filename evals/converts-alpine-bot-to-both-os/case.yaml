@@ -1,0 +1,8 @@
+schema_version: "1.1"
+name: converts-alpine-bot-to-both-os
+expected_outcome: |
+  installer/app.sh・config.schema・起動ラッパーを書き、notes-bot を Debian 系＋systemd と Alpine＋OpenRC の両方でホストのサービスとして導入できるようにする。
+  設定キーは compose の environment と同じ TOKEN（required）・CHAT_ID・LOG_LEVEL（既定 INFO）。専用ユーザーで動き、DB は /var/lib/notes-bot に置く。
+  OpenRC のログは syslog へ出す。Docker 版は残り、README に Docker 版とホスト版の対応が書かれる。bootstrap-ci-builder のコアは変更しない。
+context:
+  scaffold_script: place-files.sh

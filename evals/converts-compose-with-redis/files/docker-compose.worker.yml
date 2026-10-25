@@ -1,0 +1,10 @@
+# 期限切れのリンクを掃除する worker（任意）。docker compose -f docker-compose.yml -f docker-compose.worker.yml up -d
+services:
+  worker:
+    build: ./worker
+    depends_on:
+      - redis
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      CLEAN_INTERVAL: ${CLEAN_INTERVAL:-300}
+    restart: always

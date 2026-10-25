@@ -1,0 +1,8 @@
+schema_version: "1.1"
+name: reworks-handwritten-app-sh
+expected_outcome: |
+  systemd 専用の手書きの app.sh を、Debian 系＋systemd と Alpine＋OpenRC の両方で動く形に作り直す。サービス名 clipsync・導入先・設定キーは変えない。
+  値の検査は app_check に移り、config_value で値を読むので、不正な値は設定ファイルに書かれない。OpenRC のログは syslog へ出す。
+  uninstall は存在しないものがあっても失敗しない。bootstrap-ci-builder のコアは変更しない。
+context:
+  scaffold_script: place-files.sh

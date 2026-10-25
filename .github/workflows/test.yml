@@ -1,0 +1,58 @@
+# 責務: スキルが配る共通ライブラリ（assets/core）を、bootstrap-ci-builder のコアと組み合わせて systemd・OpenRC の両方で実際に動かして検査する。
+name: test
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: シェルの検査（構文・shellcheck）
+        run: |
+          for f in assets/core/installer/*.sh assets/app/installer/*.sh assets/app/installer/run/*.sh scripts/*.sh tests/*.sh; do sh -n "$f"; done
+          shellcheck -S warning assets/core/installer/*.sh assets/app/installer/*.sh assets/app/installer/run/*.sh scripts/*.sh tests/*.sh
+
+  e2e-systemd:
+    # GitHub のランナー（Ubuntu）は systemd で動いているので、そのまま導入する
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/checkout@v7
+        with:
+          repository: nekono-dev/bootstrap-ci-builder
+          path: .bcb
+
+      - name: E2E（Debian 系＋systemd）
+        run: sudo sh tests/e2e.sh .bcb
+
+  e2e-openrc:
+    # OpenRC は PID 1 にせず、softlevel を作って rc-service だけを使う。終了したプロセスを回収させるため --init を付ける
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/checkout@v7
+        with:
+          repository: nekono-dev/bootstrap-ci-builder
+          path: .bcb
+
+      - name: E2E（Alpine＋OpenRC）
+        run: |
+          docker run --rm --init --privileged -v "$PWD:/src:ro" alpine:3.22 sh -euc '
+            apk add --no-cache -q openrc git
+            sed -i "s/^#\?rc_sys=.*/rc_sys=\"docker\"/" /etc/rc.conf
+            mkdir -p /run/openrc && touch /run/openrc/softlevel
+            openrc default >/dev/null 2>&1 || true
+            syslogd
+            cp -r /src /work
+            git config --global --add safe.directory "*"
+            cd /work && sh tests/e2e.sh /work/.bcb
+          '
